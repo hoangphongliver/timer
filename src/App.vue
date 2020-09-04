@@ -1,28 +1,143 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="app">
+    <AppNavbar />
+    <div class="row container mt-5">
+      <!-- <Timer :time="prettyTime" /> -->
+      <router-view></router-view>
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Timer from "@/components/Timer";
+import HotelListing from "@/components/HotelListing";
+import AppNavbar from "@/components/AppNavbar";
+import AppSidebar from "@/components/AppSidebar";
+import axios from "axios";
+import HotelList from "@/components/HotelList";
 
 export default {
-  name: 'App',
+  name: "AppTimer",
   components: {
-    HelloWorld
-  }
-}
+    Timer,
+    HotelListing,
+    AppSidebar,
+    AppNavbar,
+    HotelList,
+  },
+  props: {
+    countName: {
+      type: String,
+      default: () => "countUp",
+    },
+    timeSetup: {
+      type: Number,
+      default: () => 10,
+    },
+  },
+  data() {
+    return {
+      isRunning: false,
+      minutes: 0,
+      secondes: 0,
+      time: 0,
+      timer: null,
+      hotelList: [],
+      sortBy: []
+    };
+  },
+  async created() {
+    let installPrompt;
+
+    window.addEventListener("beforeinstallprompt", (e) => {
+      e.preventDefault();
+      installPrompt = e;
+      this.installBtn = "block";
+    });
+
+    this.installer = () => {
+      this.installBtn = "none";
+      installPrompt.prompt();
+      installPrompt.userChoice.then((result) => {
+        if (result.outcome === "accepted") {
+          console.log("Install accepted!");
+        } else {
+          console.log("Install denied!");
+        }
+      });
+    };
+  },
+  mounted() {
+    this.start();
+  },
+  computed: {
+    prettyTime() {
+      let time = this.time / 60;
+      let minutes = parseInt(time);
+      let secondes = Math.round((time - minutes) * 60);
+      return minutes + ":" + secondes;
+    },
+  },
+  methods: {
+    start() {
+      this.isRunning = true;
+      if (this.countName === "countUp") {
+        this.time = 0;
+        if (!this.timer) {
+          this.timer = setInterval(() => {
+            if (this.time >= 0) {
+              this.time++;
+            }
+          }, 1000);
+        }
+      } else {
+        this.time = this.timeSetup;
+        if (!this.timer) {
+          this.timer = setInterval(() => {
+            if (this.time > 0) {
+              this.time--;
+            } else {
+              clearInterval(this.timer);
+              this.reset();
+              alert("het time");
+            }
+          }, 1000);
+        }
+      }
+    },
+    stop() {
+      this.isRunning = false;
+      clearInterval(this.timer);
+      this.timer = null;
+    },
+    reset() {
+      this.stop();
+      this.time = 0;
+      this.secondes = 0;
+      this.minutes = 0;
+      if (this.countName === "countUp") {
+        this.start();
+      }
+    },
+
+    saveSortBy(sortBy) {
+      this.sortBy = sortBy;
+    },
+  },
+};
 </script>
 
-<style>
-#app {
+<style lang="scss">
+@import "./assets/_global.scss";
+.app-timer {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>
