@@ -1,6 +1,6 @@
 <template>
   <div class="row">
-    <div class="col-sm-6 col-md-6 col-lg-4" v-for="(hotel, index) in hotelList" :key="index">
+    <div class="col-sm-6 col-md-6 col-lg-4" v-for="(hotel, index) in hotelFilter" :key="index">
       <HotelListing :hotelDetail="hotel" />
     </div>
     <AppSidebar @send:SortBy="saveSortBy" />
@@ -21,6 +21,7 @@ export default {
   data() {
     return {
       hotelList: [],
+      hotelFilter: [],
     };
   },
   async created() {
@@ -30,6 +31,7 @@ export default {
     });
 
     this.hotelList = data.data;
+    this.hotelFilter = this.hotelList;
   },
   mounted() {},
   computed: {
@@ -41,16 +43,16 @@ export default {
     saveSortBy(sortBy) {
       switch (sortBy) {
         case "lowToHigh":
-          this.hotelList.sort((a, b) => a.price - b.price);
+          this.hotelFilter.sort((a, b) => a.price - b.price);
           break;
         case "highToLow":
-          this.hotelList.sort((a, b) => b.price - a.price);
+          this.hotelFilter.sort((a, b) => b.price - a.price);
           break;
         case "numberReviews":
-          this.hotelList.sort((a, b) => b.numberStar - a.numberStar);
+          this.hotelFilter.sort((a, b) => b.numberStar - a.numberStar);
           break;
         case "popularFilter":
-          this.hotelList.sort((a, b) => a.popularSearch - b.popularSearch);
+          this.hotelFilter.sort((a, b) => a.popularSearch - b.popularSearch);
           break;
         default:
           break;
@@ -60,12 +62,13 @@ export default {
 
   watch: {
     searchPhase(val) {
-      if (val) {
-        const hotel = this.hotelList;
-        this.hotelList = hotel.filter(
-          (h) => h.hotelName.toLowerCase().indexOf(val.toLowerCase()) !== -1
-        );
-      }
+      this.hotelFilter = this.hotelList.filter((h) => {
+        if (val) {
+          return h.hotelName.toLowerCase().indexOf(val.toLowerCase()) !== -1;
+        }
+
+        return 1;
+      });
     },
   },
 };
