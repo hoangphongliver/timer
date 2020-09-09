@@ -3,8 +3,9 @@
     <AppNavbar />
     <div class="row container mt-5">
       <!-- <Timer :time="prettyTime" /> -->
-      isOnline: {{ prettyTime }}
+      isOnline: {{ isOnline }}
       <router-view></router-view>
+      <!-- <AppForm></AppForm> -->
     </div>
   </div>
 </template>
@@ -17,6 +18,7 @@ import AppSidebar from "@/components/AppSidebar";
 import axios from "axios";
 import HotelList from "@/components/HotelList";
 import { mapActions } from "vuex";
+import AppForm from "@/components/AppForm";
 
 export default {
   name: "AppTimer",
@@ -26,6 +28,7 @@ export default {
     AppSidebar,
     AppNavbar,
     HotelList,
+    AppForm,
   },
   props: {
     countName: {

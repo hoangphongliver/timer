@@ -6,6 +6,8 @@ import VueRouter from 'vue-router';
 import { routes } from './routes';
 import VueOffline from 'vue-offline';
 import store from "./store/store"
+import Vuelidate from 'vuelidate'
+Vue.use(Vuelidate)
 
 Vue.use(VueOffline)
 Vue.use(VueRouter)
