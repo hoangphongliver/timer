@@ -8,10 +8,6 @@
         <span class="icon-Icon-Reward"></span>
         <span>Earn 125 miles!</span>
       </div>
-      <!-- <div class="hotel-search-results__banner__card">
-        <span class="icon-Icon-Time"></span>
-        <span>Only 2 rooms lefts!</span>
-      </div>-->
     </div>
     <div class="hotel-search-results__summary">
       <div class="hotel-search-results__summary__hotel-name">
@@ -44,6 +40,9 @@
           </div>
         </div>
       </div>
+    </div>
+    <div class="hotel-search-results__desc__price">
+      <h4>{{ hotelDetail.price}} USD</h4>
     </div>
   </section>
 </template>

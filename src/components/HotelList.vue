@@ -11,6 +11,7 @@
 import axios from "axios";
 import HotelListing from "@/components/HotelListing";
 import AppSidebar from "@/components/AppSidebar";
+import { mapGetters } from "vuex";
 
 export default {
   components: {
@@ -31,6 +32,11 @@ export default {
     this.hotelList = data.data;
   },
   mounted() {},
+  computed: {
+    ...mapGetters({
+      searchPhase: "searchPhase",
+    }),
+  },
   methods: {
     saveSortBy(sortBy) {
       switch (sortBy) {
@@ -41,13 +47,24 @@ export default {
           this.hotelList.sort((a, b) => b.price - a.price);
           break;
         case "numberReviews":
-          this.hotelList.sort((a, b) => a.numberStar - b.numberStar);
+          this.hotelList.sort((a, b) => b.numberStar - a.numberStar);
           break;
         case "popularFilter":
           this.hotelList.sort((a, b) => a.popularSearch - b.popularSearch);
           break;
         default:
           break;
+      }
+    },
+  },
+
+  watch: {
+    searchPhase(val) {
+      if (val) {
+        const hotel = this.hotelList;
+        this.hotelList = hotel.filter(
+          (h) => h.hotelName.toLowerCase().indexOf(val.toLowerCase()) !== -1
+        );
       }
     },
   },
