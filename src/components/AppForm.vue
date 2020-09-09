@@ -1,7 +1,7 @@
 <template>
   <div class="app-form">
     <b-form-select v-model="selected" class="mb-3">
-      <b-form-select-option v-for="(item , key) in form" :key="key" :value="key">{{key}}</b-form-select-option>
+      <b-form-select-option v-for="(item , keyy) in form" :key="keyy" :value="keyy">{{form[keyy]}}</b-form-select-option>
     </b-form-select>
     <b-form-group
       v-for="(item,key) in form"
@@ -32,6 +32,10 @@
       type="button"
       class="btn btn-outline-primary"
     >Submit</button>
+
+    <div v-for="(item,index) in randomList(arr)" :key="`${index}_abc`" class="mb-5">
+      <div v-for="(val, key) in randomAnswer(item.answer)" :key="`${key}_abc`">{{ key }} : {{ val}}</div>
+    </div>
   </div>
 </template>
 
@@ -52,6 +56,45 @@ export default {
       form: {
         a: "",
         b: "",
+        c: "",
+        d: "",
+      },
+      sound: "../assets/audio/gvl.mp3",
+      arr: [
+        {
+          id: "7",
+          CategoryId: "14",
+          questionName: "Hyper Text Markup Language",
+          answer: {
+            a: " Hyper Text Markup Language",
+            b: " Hyperlinks and Text Markup Language",
+            c: " Home Tool Markup Language",
+            d: " Home Markup Language",
+          },
+          rightAnswer: "A",
+          like: 30,
+          _showDetails: false,
+        },
+        {
+          id: "26",
+          CategoryId: "14",
+          questionName: "Who is making the Web standards?",
+          answer: {
+            a: "Google",
+            b: "Mozilla",
+            c: " The World Wide Web Consortium",
+            d: "Microsoft",
+          },
+          rightAnswer: "C",
+          like: 74,
+          _showDetails: false,
+        },
+      ],
+      answer: {
+        a: " Hyper Text Markup Language",
+        b: " Hyperlinks and Text Markup Language",
+        c: " Home Tool Markup Language",
+        d: " Home Markup Language",
       },
     };
   },
@@ -91,6 +134,9 @@ export default {
       },
     },
   },
+  mounted() {
+    console.log(this.randomAnswer(this.answer));
+  },
   methods: {
     getVal() {
       const length = Object.keys(this.form).length;
@@ -118,8 +164,32 @@ export default {
       }
     },
 
+    randomList(rand) {
+      return rand.sort(() => {
+        return 0.5 - Math.random();
+      });
+    },
+
+    randomKey(obj) {
+      return Object.keys(obj).sort(() => {
+        return 0.5 - Math.random();
+      });
+    },
+
+    randomAnswer(answer) {
+      const allKeyRD = this.randomKey(answer);
+      let obj = {};
+      allKeyRD.forEach((key) => {
+        obj[key] = answer[key];
+      });
+
+      return obj;
+    },
+
     submit() {
-      console.log(this.form);
+      const sound = require("@/assets/audio/gvl.mp3");
+      let audio = new Audio(sound);
+      audio.play();
     },
   },
 };
