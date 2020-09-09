@@ -7314,8 +7314,8 @@ regexpu-core@^4.7.0:
 
 register-service-worker@^1.7.1:
   version "1.7.1"
-  resolved "https://registry.npm.taobao.org/register-service-worker/download/register-service-worker-1.7.1.tgz#6308347ac6c0af0f6c0b22ea5d59d25e836bc932"
-  integrity sha1-Ywg0esbArw9sCyLqXVnSXoNryTI=
+  resolved "https://registry.yarnpkg.com/register-service-worker/-/register-service-worker-1.7.1.tgz#6308347ac6c0af0f6c0b22ea5d59d25e836bc932"
+  integrity sha512-IdTfUZ4u8iJL8o1w8es8l6UMGPmkwHolUdT+UmM1UypC80IB4KbpuIlvwWVj8UDS7eJwkEYRcKRgfRX+oTmJsw==
 
 regjsgen@^0.5.1:
   version "0.5.2"
@@ -8785,6 +8785,11 @@ vue-loader@^15.9.2:
     loader-utils "^1.1.0"
     vue-hot-reload-api "^2.3.0"
     vue-style-loader "^4.1.0"
+
+vue-offline@^2.0.8:
+  version "2.0.8"
+  resolved "https://registry.yarnpkg.com/vue-offline/-/vue-offline-2.0.8.tgz#d3a01b3bc5e6bb46fb9fd914443064d837915300"
+  integrity sha512-r9sU3HTnnaWEv6Wgl8RC/mrSRceSE6jIEkLNsNKR1uzCkVizvbG7X2EEU3uMcEsHqOfDLjl1TakUtlXb/xgUWg==
 
 vue-router@^3.3.4:
   version "3.4.3"

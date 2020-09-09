@@ -16,6 +16,10 @@ self.addEventListener("message", msg => {
     }
 });
 
+self.addEventListener("offline", msg => {
+    console.log(msg);
+});
+
 self.addEventListener('push', function (event) {
     if (event.data) {
         // Notification.requestPermission();
@@ -27,15 +31,16 @@ self.addEventListener('push', function (event) {
     }
 });
 
+
 self.addEventListener('fetch', function (event) {
+    console.log(event);
     event.respondWith(
-        caches.match(event.request)
-            .then(function (response) {
-                return response || fetch(event.request);
-            })
-            .catch(err => console.log(err))
+        fetch(event.request).catch(function () {
+            return caches.match(event.request);
+        })
     );
 });
+
 
 
 function postMessage(payload) {

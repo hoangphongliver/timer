@@ -3,6 +3,7 @@
     <AppNavbar />
     <div class="row container mt-5">
       <!-- <Timer :time="prettyTime" /> -->
+      isOnline: {{ prettyTime }}
       <router-view></router-view>
     </div>
   </div>
@@ -15,6 +16,7 @@ import AppNavbar from "@/components/AppNavbar";
 import AppSidebar from "@/components/AppSidebar";
 import axios from "axios";
 import HotelList from "@/components/HotelList";
+import { mapActions } from "vuex";
 
 export default {
   name: "AppTimer",
@@ -34,6 +36,11 @@ export default {
       type: Number,
       default: () => 10,
     },
+
+    showHours: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -43,7 +50,7 @@ export default {
       time: 0,
       timer: null,
       hotelList: [],
-      sortBy: []
+      sortBy: [],
     };
   },
   async created() {
@@ -69,13 +76,31 @@ export default {
   },
   mounted() {
     this.start();
+
+    this.$on("online", () => {
+      this.isOnline = true;
+      localStorage.setItem("isOnline", this.isOnline);
+    });
+
+    this.$on("offline", () => {
+      console.log("User is now offline");
+      this.isOnline = false;
+      localStorage.setItem("isOnline", this.isOnline);
+    });
   },
   computed: {
     prettyTime() {
-      let time = this.time / 60;
-      let minutes = parseInt(time);
-      let secondes = Math.round((time - minutes) * 60);
-      return minutes + ":" + secondes;
+      let time = this.time;
+      let hours = parseInt(time / 3600);
+      let minites = parseInt((time / 3600 - hours) * 60);
+      let secondes = time - hours * 3600 - minites * 60;
+      let prettyHours = hours < 10 ? `0${hours}` : hours;
+      let prettyMinutes = minites < 10 ? `0${minites}` : minites;
+      let prettySecondes = secondes < 10 ? `0${secondes}` : secondes;
+
+      return `${
+        prettyHours >= 1 ? `${prettyHours}:` : ""
+      }${prettyMinutes}:${prettySecondes}`;
     },
   },
   methods: {

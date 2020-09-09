@@ -59,11 +59,28 @@ export default Vue.extend({
       default: () => {},
     },
   },
+  mounted() {
+    console.log(this.isOnline);
+  },
   components: {},
   methods: {
     goToDetailPage() {
-      this.$router.push(`/detail/${this.hotelDetail.id}`);
+      if (this.isOnline) {
+        this.$router.push(`/detail/${this.hotelDetail.id}`);
+      } else {
+        alert("You are Offline");
+      }
     },
+  },
+  beforeRouteLeave(to, from, next) {
+    const answer = window.confirm(
+      "Do you really want to leave? you have unsaved changes!"
+    );
+    if (answer) {
+      next();
+    } else {
+      next(false);
+    }
   },
 });
 </script>
