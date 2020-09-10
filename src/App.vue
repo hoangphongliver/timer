@@ -4,8 +4,10 @@
     <div class="row container mt-5">
       <!-- <Timer :time="prettyTime" /> -->
       isOnline: {{ isOnline }}
-      <router-view></router-view>
+      <!-- <router-view></router-view> -->
       <!-- <AppForm></AppForm> -->
+      <FormUpload @send:ImageURL="getUrl" />
+      <img :src="imageValue" alt="">
     </div>
   </div>
 </template>
@@ -19,6 +21,7 @@ import axios from "axios";
 import HotelList from "@/components/HotelList";
 import { mapActions } from "vuex";
 import AppForm from "@/components/AppForm";
+import FormUpload from "@/components/FormUpload";
 
 export default {
   name: "AppTimer",
@@ -29,6 +32,7 @@ export default {
     AppNavbar,
     HotelList,
     AppForm,
+    FormUpload,
   },
   props: {
     countName: {
@@ -54,6 +58,7 @@ export default {
       timer: null,
       hotelList: [],
       sortBy: [],
+      imageValue: "",
     };
   },
   async created() {
@@ -148,6 +153,10 @@ export default {
       }
     },
 
+    getUrl(value) {
+      this.imageValue = value;
+    },
+
     saveSortBy(sortBy) {
       this.sortBy = sortBy;
     },
@@ -157,15 +166,19 @@ export default {
 
 <style lang="scss">
 @import "./assets/_global.scss";
-.app-timer {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+// .app-timer {
+//   font-family: Avenir, Helvetica, Arial, sans-serif;
+//   -webkit-font-smoothing: antialiased;
+//   -moz-osx-font-smoothing: grayscale;
+//   text-align: center;
+//   color: #2c3e50;
+//   margin-top: 60px;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+img{
+  width: 300px;
+  height: 200px;
 }
+// }
 </style>
