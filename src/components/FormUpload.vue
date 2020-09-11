@@ -19,7 +19,9 @@
         v-model="imageValue"
       />
       <input hidden type="file" ref="fileInput" @change="previewImage" />
-      <b-button @click="onUpload" variant="success">Upload</b-button>
+      <b-button @click="onUpload" variant="success">
+        <b-spinner v-if="isLoading" small label="Small Spinner"></b-spinner>Upload
+      </b-button>
     </div>
     <div class="upload-file__error" v-if="isError">Please Choose File!</div>
   </div>

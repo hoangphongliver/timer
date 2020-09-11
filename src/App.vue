@@ -1,21 +1,30 @@
 <template>
   <div class="app">
     <AppNavbar />
-    <div class="row container mt-5">
-      <!-- <Timer :time="prettyTime" /> -->
+    <div class="container mt-5">
+      <!-- <Timer :time="prettyTime" />
       isOnline: {{ isOnline }}
-      <!-- <router-view></router-view> -->
-      <!-- <AppForm></AppForm> -->
-      <FormUpload @send:ImageURL="getUrl" />
+      <router-view></router-view>
+      <AppForm></AppForm>-->
+      <!-- <FormUpload @send:ImageURL="getUrl" /> -->
+      <b-button class="mb-5" @click="showModal" variant="info">Upload Image</b-button>
       <div class="load-image">
         <div class="load-image__spinner">
           <b-spinner v-if="isLoadImage" variant="primary"></b-spinner>
         </div>
-        <div class="load-image__image" :class="{'load-image--loading': isLoadImage}">
-          <img @load="onImgLoad" :src="imageValue" alt />
+        <div
+          class="load-image__image"
+          :class="{'load-image--loading': isLoadImage}"
+          @load="onImgLoad"
+          ref="avatar"
+        >
+          <img v-if="imageValue" @load="onImgLoad" :src="imageValue" alt />
         </div>
       </div>
     </div>
+    <AppModal size="xl" ref="cropper-modal">
+      <ImageCrop @send:ImageURL="saveImageUrl" :imageValue="imageValue" />
+    </AppModal>
   </div>
 </template>
 
@@ -29,6 +38,8 @@ import HotelList from "@/components/HotelList";
 import { mapActions } from "vuex";
 import AppForm from "@/components/AppForm";
 import FormUpload from "@/components/FormUpload";
+import ImageCrop from "@/components/ImageCrop";
+import AppModal from "@/components/AppModal";
 
 export default {
   name: "AppTimer",
@@ -40,6 +51,8 @@ export default {
     HotelList,
     AppForm,
     FormUpload,
+    AppModal,
+    ImageCrop,
   },
   props: {
     countName: {
@@ -164,6 +177,10 @@ export default {
     getUrl(value) {
       this.imageValue = value;
       this.isLoadImage = true;
+      setTimeout(() => {
+        this.isLoadImage = false;
+      }, 1000);
+      this.$refs["avatar"].style.backgroundImage = `url(${value})`;
     },
 
     saveSortBy(sortBy) {
@@ -172,6 +189,25 @@ export default {
 
     onImgLoad(e) {
       this.isLoadImage = false;
+    },
+
+    showModal() {
+      this.$refs["cropper-modal"].showModal();
+    },
+
+    saveImageUrl(value) {
+      this.imageValue = value;
+      this.isLoadImage = true;
+      setTimeout(() => {
+        this.isLoadImage = false;
+      }, 1000);
+      this.$bvToast.toast(`Success`, {
+        title: "Upload Success",
+        variant: "success",
+        autoHideDelay: 1500,
+        toaster: "b-toaster-top-center",
+      });
+      this.$refs["cropper-modal"].hideModal();
     },
   },
 };
@@ -191,6 +227,7 @@ export default {
 //   align-items: center;
 .load-image {
   position: relative;
+  width: 300px;
   &__spinner {
     position: absolute;
     left: 50%;
@@ -200,9 +237,18 @@ export default {
   }
 
   &__image {
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    border: 2px solid wheat;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position-x: center;
+    background-position-y: center;
     img {
-      width: 300px;
-      height: 200px;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
     }
   }
 

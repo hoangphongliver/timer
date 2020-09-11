@@ -9,6 +9,7 @@ import store from "./store/store"
 import Vuelidate from 'vuelidate'
 import firebase from 'firebase';
 
+
 firebase.initializeApp({
   apiKey: "AIzaSyBO3I4ahxKWyBsYfpw0dCDPPli5WsPTYtU",
   authDomain: "app-pwa-dcc636.firebaseapp.com",
@@ -19,8 +20,8 @@ firebase.initializeApp({
   appId: "1:340387587623:web:eeddd9170dca07342f9002",
   measurementId: "G-91J8KTGWSR"
 })
-Vue.use(Vuelidate)
 
+Vue.use(Vuelidate)
 Vue.use(VueOffline)
 Vue.use(VueRouter)
 
