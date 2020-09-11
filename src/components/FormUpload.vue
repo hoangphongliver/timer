@@ -16,8 +16,9 @@
         type="text"
         @click="$refs.fileInput.click()"
         readonly
+        v-model="imageValue"
       />
-      <input hidden type="file" ref="fileInput" @change="previewImage" formControlName="file" />
+      <input hidden type="file" ref="fileInput" @change="previewImage" />
       <b-button @click="onUpload" variant="success">Upload</b-button>
     </div>
     <div class="upload-file__error" v-if="isError">Please Choose File!</div>
@@ -40,6 +41,7 @@ export default {
       uploadProgress: 0,
       isLoading: false,
       isError: false,
+      imageValue: "",
     };
   },
   methods: {
@@ -47,8 +49,9 @@ export default {
       if (event.target.files && event.target.files[0]) {
         this.uploadProgress = 0;
         this.imageData = event.target.files[0];
-        this.$refs["inputShow"].value = this.imageData.name;
+        this.imageValue = this.imageData.name;
         this.isError = false;
+        this.onUpload();
       }
     },
 

@@ -7,7 +7,14 @@
       <!-- <router-view></router-view> -->
       <!-- <AppForm></AppForm> -->
       <FormUpload @send:ImageURL="getUrl" />
-      <img :src="imageValue" alt="">
+      <div class="load-image">
+        <div class="load-image__spinner">
+          <b-spinner v-if="isLoadImage" variant="primary"></b-spinner>
+        </div>
+        <div class="load-image__image" :class="{'load-image--loading': isLoadImage}">
+          <img @load="onImgLoad" :src="imageValue" alt />
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -59,6 +66,7 @@ export default {
       hotelList: [],
       sortBy: [],
       imageValue: "",
+      isLoadImage: false,
     };
   },
   async created() {
@@ -155,10 +163,15 @@ export default {
 
     getUrl(value) {
       this.imageValue = value;
+      this.isLoadImage = true;
     },
 
     saveSortBy(sortBy) {
       this.sortBy = sortBy;
+    },
+
+    onImgLoad(e) {
+      this.isLoadImage = false;
     },
   },
 };
@@ -176,9 +189,26 @@ export default {
 //   display: flex;
 //   justify-content: center;
 //   align-items: center;
-img{
-  width: 300px;
-  height: 200px;
+.load-image {
+  position: relative;
+  &__spinner {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+  }
+
+  &__image {
+    img {
+      width: 300px;
+      height: 200px;
+    }
+  }
+
+  &--loading {
+    opacity: 0.6;
+  }
 }
 // }
 </style>
